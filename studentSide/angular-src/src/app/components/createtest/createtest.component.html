@@ -1,0 +1,238 @@
+<!--<p>
+  createtest works!
+</p>-->
+
+<!--<div class="jumbotron text-center">
+  <h2 class="page-header">Create Test</h2>
+</div>
+  <div class="shadow-lg p-3 mb-5 bg-white rounded w-50 p-3 mx-auto">
+  <form (submit) = "onCreateTestSubmit()">-->
+    <!--
+    <div class="form-group">
+      <label>Program</label>
+      <input type="text" class="form-control" [(ngModel)]="program" name="program">
+    </div>-->
+      <div class="jumbotron text-center">
+          <h2 class="page-header">Create Test</h2>
+      </div>
+      <!--class="shadow-lg p-3 mb-5 bg-white rounded w-100 p-3 mx-auto"-->
+      <div class="shadow-lg p-3 mb-5 bg-white rounded w-150 p-3 mx-auto">
+        <form [formGroup]="myForm" (submit)="onCreateTestSubmit()">
+            <!-- we will place our fields here -->
+
+            <mat-horizontal-stepper linear #stepper>
+                <mat-step [stepControl]="myForm">
+                    <ng-template matStepLabel type="button">Exam Info</ng-template>
+                    <div>
+                      <mat-form-field>
+                        <input matInput formControlName="batch" [(ngModel)]="batch" name="batch" placeholder="Batch">
+                        <mat-error *ngIf="!myForm.controls.batch.valid">
+                          Exactly <strong>4</strong> digits
+                        </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <br />
+                    <div>
+                      <mat-form-field>
+                        <input matInput formControlName="program" [(ngModel)]="program" name="program" placeholder="Program">
+                        <mat-error *ngIf="!myForm.controls.program.valid">
+                          Exactly <strong>2</strong> digits
+                        </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <br />
+                    <div>
+                      <mat-form-field>
+                        <input matInput formControlName="code" [(ngModel)]="code" name="code" placeholder="Course Code">
+                        <mat-error *ngIf="!myForm.controls.code.valid">
+                          Exactly <strong>5</strong> characters Example:IT314
+                        </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <br />
+                    <div>
+                        <mat-form-field>
+                          <input matInput [matDatepicker]="picker" formControlName="startdate" [(ngModel)]="startdate" name="startdate" placeholder="Exam-Start Date">
+                          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                          <mat-datepicker #picker></mat-datepicker>
+                          <mat-error *ngIf="!myForm.controls.startdate.valid">
+                          </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <br />
+                    <div>
+                        <label style="font-size: large; color: #673ab7">Exam - Start Time</label>
+                        <br />
+                        <mat-form-field class="manage-display" style="width: 5% !important">
+                            <input matInput formControlName="starthh" [(ngModel)]="starthh" name="starthh" placeholder="HH">
+                            <mat-error *ngIf="!myForm.controls.starthh.valid"></mat-error>
+                        </mat-form-field>
+                        :
+                        <mat-form-field class="manage-display" style="width: 5% !important">
+                            <input matInput formControlName="startmm" [(ngModel)]="startmm" name="startmm" placeholder="MM">
+                            <mat-error *ngIf="!myForm.controls.startmm.valid"></mat-error>
+                        </mat-form-field>
+                        :
+                        <mat-form-field class="manage-display" style="width: 5% !important">
+                            <input matInput formControlName="startss" [(ngModel)]="startss" name="startss" placeholder="SS">
+                            <mat-error *ngIf="!myForm.controls.startss.valid"></mat-error>
+                        </mat-form-field>
+                    </div>
+                    <br />
+                    <div>
+                        <label style="font-size: large; color: #673ab7">Exam - Duration</label>
+                        <br />
+                        <mat-form-field class="manage-display" style="width: 5% !important">
+                            <input matInput formControlName="durationhh" [(ngModel)]="durationhh" name="durationhh" placeholder="HH">
+                            <mat-error *ngIf="!myForm.controls.durationhh.valid"></mat-error>
+                        </mat-form-field>
+                        :
+                        <mat-form-field class="manage-display" style="width: 5% !important">
+                            <input matInput formControlName="durationmm" [(ngModel)]="durationmm" name="durationmm" placeholder="MM">
+                            <mat-error *ngIf="!myForm.controls.durationmm.valid"></mat-error>
+                        </mat-form-field>
+                        :
+                        <mat-form-field class="manage-display" style="width: 5% !important">
+                            <input matInput formControlName="durationss" [(ngModel)]="durationss" name="durationss" placeholder="SS">
+                            <mat-error *ngIf="!myForm.controls.durationss.valid"></mat-error>
+                        </mat-form-field>
+                    </div>
+                    <br />
+                    <div ng-app="myApp">
+                      <tags-input ng-model="tags"></tags-input>
+                    </div>
+                    <script type="text/javascript" src="../../../node_modules/angular/angular.min.js"></script>
+                    <script type="text/javascript" src="../../../node_modules/ng-tags-input/build/ng-tags-input.min.js"></script>
+                    <script>
+                      var app =  angular.module('myApp', ['ngTagsInput']);
+                    </script>
+                    <div>
+                      <mat-form-field>
+                        <textarea matInput formControlName="description"
+                                  cdkTextareaAutosize
+                                  #autosize="cdkTextareaAutosize"
+                                  cdkAutosizeMinRows="5"
+                                  cdkAutosizeMaxRows="10"
+                                  placeholder="Description"></textarea>
+                      </mat-form-field>
+                    </div>
+                    <div class="text-center">
+                        <button mat-button matStepperNext type="button" style="font-size: large; color: #673ab7">
+                            Next
+                            <mat-icon class="mat-icon-rtl-mirror">
+                                arrow_forward_ios
+                            </mat-icon>
+                        </button>
+                    </div>
+                </mat-step>
+                <mat-step [stepControl] = "myForm">
+                    <ng-template matStepLabel>Set Questions</ng-template>
+                    <!--list of questions-->
+                    <div formArrayName="qset">
+                        <div *ngFor="let temp of myForm.controls.qset.controls; let i=index">
+                          <mat-accordion>
+                          <mat-expansion-panel class="manage-q">
+                            <mat-expansion-panel-header>
+                              <mat-panel-title style="font-size: large; color: #673ab7">
+                                  Question {{i+1}}
+                              </mat-panel-title>
+                            </mat-expansion-panel-header>
+                            <div class="form-group">
+                                <!--<label class="make-bold">Question {{i + 1}}</label>-->
+
+                                <span class="pull-right" *ngIf="myForm.controls.qset.controls.length > 1"
+                                    (click)="removeQuestion(i)" style="cursor: pointer; color: #673ab7">
+                                    <mat-icon class="mat-icon-rtl-mirror">
+                                        close
+                                    </mat-icon>
+                                </span>
+                            </div>
+
+                            <!-- Angular assigns array index as group name by default 0, 1, 2, ... -->
+                            <div [formGroupName]="i">
+                                <div>
+                                    <mat-form-field style="width: 85% !important">
+                                        <textarea matInput formControlName="q"
+                                                  cdkTextareaAutosize
+                                                  #autosize="cdkTextareaAutosize"
+                                                  cdkAutosizeMinRows="5"
+                                                  cdkAutosizeMaxRows="10"
+                                                  placeholder="Question"></textarea>
+                                    </mat-form-field>
+                                    <!--<mat-form-field style="width: 80% !important">
+                                        <input matInput formControlName="q" placeholder="Question">
+                                    </mat-form-field>-->
+                                    <mat-form-field class="place-marks" style="width: 10% !important">
+                                        <input matInput formControlName="m" placeholder="Marks">
+                                    </mat-form-field>
+                                </div>
+                                <div>
+                                    <mat-form-field style="width: 100% !important">
+                                      <textarea matInput formControlName="a"
+                                                cdkTextareaAutosize
+                                                #autosize="cdkTextareaAutosize"
+                                                cdkAutosizeMinRows="5"
+                                                cdkAutosizeMaxRows="10"
+                                                placeholder="Answer"></textarea>
+                                    </mat-form-field>
+                                </div>
+                                <div>
+
+                                </div>
+                              </div>
+                            </mat-expansion-panel>
+                          </mat-accordion>
+                        </div>
+                    </div>
+
+                    <div>
+                      <button mat-raised-button type="button" (click)="addQuestion()">Add another Question +</button>
+                    </div>
+                    <br />
+                    <div class="text-center">
+                        <button mat-button matStepperPrevious type="button" style="font-size: large; color: #673ab7">
+                            <mat-icon class="mat-icon-rtl-mirror">
+                                arrow_back_ios
+                            </mat-icon>
+                            Previous
+                        </button>
+                        <button mat-button matStepperNext type="button" style="font-size: large; color: #673ab7">
+                            Next
+                            <mat-icon class="mat-icon-rtl-mirror">
+                                arrow_forward_ios
+                            </mat-icon>
+                        </button>
+                    </div>
+                </mat-step>
+                <mat-step>
+                    <ng-template matStepLabel>Submit</ng-template>
+                    <br />
+                    <div class="text-center">
+                        <label style="font-size: large; color: #673ab7">Do you want to continue?</label>
+                    </div>
+                    <br />
+                    <div class="text-center">
+                      <input type="submit" class="btn btn-primary center" value="Submit">
+                    </div>
+                    <br />
+                    <br />
+                    <div class="text-center">
+                        <button mat-button matStepperPrevious type="button" style="font-size: large; color: #673ab7">
+                            <mat-icon class="mat-icon-rtl-mirror">
+                                arrow_back_ios
+                            </mat-icon>
+                            Previous
+                        </button>
+                    </div>
+                </mat-step>
+            </mat-horizontal-stepper>
+        </form>
+      </div>
+
+    <!--<input type="submit" class="btn btn-primary center" value="Submit">-->
+  <!--</form>-->
+    <!--<div class="text-center">
+      <button (click)="forgetPassword()" id="forgetPassword">Forgot Password</button>
+      <button (click)="changePassword()" id="changePassword">Change Password</button>
+    </div>-->
+  <!--</div>-->

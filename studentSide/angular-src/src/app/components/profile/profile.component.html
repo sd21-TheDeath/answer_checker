@@ -1,0 +1,11 @@
+<div *ngIf="userPresent==true">
+  <h2 class="page-header">{{user.name}}</h2>
+  <ul class="list-group">
+    <li class="list-group-item">Username : {{user.username}}</li>
+    <li class="list-group-item">Email : {{user.email}}</li>
+  </ul>
+</div>
+
+<div *ngIf="userPresent==false">
+    <h2 class="page-header">You have to login first to visit this page :(</h2>
+  </div>

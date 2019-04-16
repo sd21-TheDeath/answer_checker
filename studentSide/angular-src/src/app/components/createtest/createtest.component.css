@@ -1,0 +1,48 @@
+.pull-right{
+    float: right!important;
+    font-weight: 900;
+    font: caption;
+    font-size: x-large
+}
+
+.place-marks{
+    float: right !important;
+}
+
+.example-container {
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+  }
+
+.manage-width{
+    min-width: 0px !important;
+    width: 15% !important;
+}
+
+.manage-display{
+    margin-left: 1%;
+    margin-right: 1%;
+}
+
+.manage-q{
+    margin-top: 2%;
+    margin-bottom: 2%;
+}
+
+.manage-display input{
+    width: 60%;
+    margin-bottom: 4%
+}
+
+.make-bold{
+    font-weight: 900;
+    font: caption;
+    text-decoration-line: underline;
+    margin-top: 2% 
+}
+
+.example-tree-node {
+    display: flex;
+    align-items: center;
+  }

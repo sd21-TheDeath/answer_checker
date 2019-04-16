@@ -1,0 +1,45 @@
+<div class="jumbotron text-center">
+    <img src="http://i66.tinypic.com/11r7i8h.png" alt="daiict" height="100" width="100" class="center">
+    <h2 class="page-header">Professor Registration</h2>
+</div>
+<div class="text-center shadow-lg p-3 mb-5 bg-white rounded w-50 p-3 mx-auto">
+  <form [formGroup]="myForm" (submit)="onRegisterSubmit()">
+    <br />
+    <div>
+      <mat-form-field class="manage-display">
+      <input matInput formControlName="name" [(ngModel)]="name" name="name" placeholder="Name">
+      <mat-error *ngIf="!myForm.controls.name.valid">
+      </mat-error>
+      </mat-form-field>
+      <!--<label>Name</label>
+      <input type="text" [(ngModel)]="name" name="name" id="name" class="form-control">-->
+    </div>
+    <div>
+      <mat-form-field class="manage-display">
+      <input matInput formControlName="username" [(ngModel)]="username" name="username" placeholder="Username">
+      <mat-error *ngIf="!myForm.controls.username.valid">
+      </mat-error>
+      </mat-form-field>
+    </div>
+    <div>
+      <mat-form-field class="manage-display">
+      <input matInput formControlName="email" [(ngModel)]="email" name="email" placeholder="Email">
+      <mat-error *ngIf="!myForm.controls.email.valid">
+      </mat-error>
+      </mat-form-field>
+    </div>
+
+    
+    <!-- <div class="dropdown" dropdown [dropdownToggle]="false">
+      <button class="btn btn-primary" dropdown-open>My Heroes</button>
+      <ul class="dropdown-menu">
+          <li><a>Badman</a></li>
+          <li><a>Sadman</a></li>
+          <li><a>Lieman</a></li>
+      </ul>
+  </div> -->
+    <div class="text-center">
+    <input type="submit" class="btn btn-primary" value="Generate Password and Send">
+  </div>
+  </form>
+</div>

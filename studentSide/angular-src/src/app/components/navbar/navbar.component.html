@@ -1,0 +1,49 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary static-top">
+  <div class="container" >
+    <a class="navbar-brand" href="#">
+          <img src="https://eyecarelocale.com/wp-content/uploads/2017/03/f9837460d9cf44345fa7da87754b3da3_pen-and-paper-clipart-black-pen-and-paper-clipart-black-and-white_425-357.jpeg" alt="da-iict"  height="50" width="50" class="rounded-circle center">
+        </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+    <div class="collapse navbar-collapse" id="navbarResponsive">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item active">
+          <a class="nav-link" [routerLink] = "['/']">Home
+                <span class="sr-only">(current)</span>
+              </a>
+        </li>
+        <li class="nav-item" *ngIf="false">
+          <a class="nav-link" [routerLink] = "['/dashboard']">Dashboard</a>
+        </li>
+        <li class="nav-item" *ngIf="dummyStudentLoggedIn">
+          <a class="nav-link" [routerLink] = "['/profile']">Profile</a>
+        </li>
+        <li class="nav-item"  *ngIf="!dummyStudentLoggedIn && !dummyProfessorLoggedIn && !dummyAdminLoggedIn">
+          <a class="nav-link" [routerLink] = "['/login']">Login</a>
+        </li>
+        <li class="nav-item" *ngIf="dummyStudentLoggedIn">
+          <a class="nav-link" href="#" (click)="onExamClick()" >Exam <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item"  *ngIf="dummyProfessorLoggedIn">
+        <a class="nav-link" [routerLink] = "['/login']">prof authority</a>
+      </li>
+      <li class="nav-item"  *ngIf="dummyAdminLoggedIn">
+        <a class="nav-link" [routerLink] = "['/register']">Register Batch</a>
+      </li>
+      <li class="nav-item"  *ngIf="dummyAdminLoggedIn">
+        <a class="nav-link" [routerLink] = "['/registerprofessor']">Register Professor</a>
+      </li>
+      <li class="nav-item" *ngIf="dummyStudentLoggedIn || dummyProfessorLoggedIn || dummyAdminLoggedIn">
+        <a class="nav-link" [routerLink] = "['/changepass']" >Change Password </a>
+      </li> 
+        <li class="nav-item" *ngIf="dummyStudentLoggedIn || dummyProfessorLoggedIn || dummyAdminLoggedIn">
+            <a class="nav-link" href="#" (click)="onLogoutClick()" >Logout <span class="sr-only">(current)</span></a>
+        </li>        
+      </ul>
+    </div>
+  </div>  
+</nav>
+
+
+<!-- https://bootswatch.com/4/cyborg/bootstrap.min.css -->

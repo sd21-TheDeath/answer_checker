@@ -1,0 +1,94 @@
+<div *ngIf="!examSelected">
+  <div *ngFor="let course of examCourses, let i=index">
+    <br />
+    <mat-card style="background-color: ">
+      <mat-card-header>
+        <mat-card-title >{{course.code}}</mat-card-title>
+        <mat-card-subtitle>
+          <div *ngIf="times_up[i]==true && exam_ended[i]==false">
+            Exam is going on
+          </div>
+          <div *ngIf="times_up[i]==true && exam_ended[i]==true">
+            Exam has ended
+          </div>
+          <div *ngIf="times_up[i]==false">
+            Upcoming Exam
+          </div>
+        </mat-card-subtitle>
+      </mat-card-header>
+      <!-- <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu"> -->
+      <mat-card-content>
+        <div *ngIf="times_up[i]==false" style="color: #673ab7; font-size: x-large; text-align: center;">
+          <span style="color: #8a7659; font-size: large">Starts in: </span>{{course.due_hour}} : {{course.due_min}} : {{course.due_sec}}
+        </div>
+        <div *ngIf="times_up[i]==true && exam_ended[i]==false" style= "color: #673ab7; font-size: x-large; text-align: center;">
+          <span style="color: #8a7659; font-size: large">Ends in: </span>{{course.remhh}} : {{course.remmm}} : {{course.remss}}
+        </div>
+        <div *ngIf="times_up[i]==true && exam_ended[i]==true" style="color: #673ab7; font-size: x-large; text-align: center;">
+          <span style="color: #8a7659; font-size: large">Come back later..</span>
+        </div>
+      </mat-card-content>
+      <mat-card-actions style="text-align: center !important;">
+        <button mat-raised-button type="button" mat-button *ngIf="times_up[i]==true && exam_taken==false && exam_ended[i]==false" (click)="onButtonClick(i)">Take Exam</button>
+        <button mat-raised-button disabled type="button" mat-button *ngIf="!(times_up[i]==true && exam_taken==false && exam_ended[i]==false)" (click)="onButtonClick(i)">Take Exam</button>
+        <!-- <button type="button" mat-button>Set Reminder</button> -->
+      </mat-card-actions>
+    </mat-card>
+  </div>
+</div>
+
+
+<!-- <div *ngIf="!examSelected">
+  <div *ngFor="let course of examCourses, let i = index">
+    <button (click)="courseSelection(i)" id="courseSelection">{{course}}</button>
+  </div>
+</div>
+<div *ngIf="examSelected">
+<p *ngIf="times_up==false">
+  {{due_hour}} {{due_min}} {{due_sec}}
+</p> -->
+
+
+<!-- <button *ngIf="times_up==true && exam_taken==false" (click)="onButtonClick()" id="takeExamButton">Take Exam</button> -->
+
+
+
+<div *ngIf="exam_taken==true">
+<div>
+  <button *ngIf="pageRefreshed && anyAnsSaved" (click)="loadAnswers()">Load my Answers</button>
+</div>
+
+<form [formGroup]="myForm" (submit)="onAnswerSubmitClick()">
+    <div formArrayName="ansSet">
+    <mat-tab-group>
+    <div *ngFor="let temp of myForm.controls.ansSet.controls, let i = index">
+    <!-- <mat-tab label="Question {{i+1}}"> -->
+        <!--{{question.q}}-->
+      <mat-tab label="Question {{i+1}}">
+      <div [formGroupName]="i">
+        <br />
+        <span style="color: #673ab7; font-size: x-large">{{myForm.value.ansSet[i].question}}</span>
+        <br />
+        <br />
+        <!-- <textarea class="form-control rounded-0" attr.id="ans" rows="10"></textarea> -->
+        <mat-form-field style="width: 100% !important">
+          <textarea matInput formControlName="ans"
+                    cdkTextareaAutosize
+                    #autosize="cdkTextareaAutosize"
+                    cdkAutosizeMinRows="5"
+                    cdkAutosizeMaxRows="10"
+                    placeholder="Enter Your Answer Here">
+          </textarea>
+        </mat-form-field>
+      </div>
+      </mat-tab>
+      <!-- </mat-tab> -->
+      </div>
+    </mat-tab-group>
+    </div>
+  <!-- </mat-tab-group> -->
+  <input type="submit" *ngIf="times_up" class="btn btn-primary center" value="Submit my Answers">
+</form>
+
+</div>
+<!-- </div> -->

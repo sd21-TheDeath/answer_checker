@@ -1,0 +1,37 @@
+
+
+<div class="jumbotron text-center">
+    <img src="http://i66.tinypic.com/11r7i8h.png" alt="daiict" height="100" width="100" class="center">
+    <h2 class="page-header">Batch Registration</h2>
+</div>
+<div class="text-center shadow-lg p-3 mb-5 bg-white rounded w-50 p-3 mx-auto">
+  <form [formGroup]="myForm" (submit)="onRegisterSubmit()">
+      <div>
+        <mat-form-field class="manage-display">
+          <input matInput formControlName="batch" (keypress)="numberOnly($event)" [(ngModel)]="batch" name="batch" id="batch" placeholder="Batch">
+          <mat-error *ngIf="!myForm.controls.batch.valid">
+            Exactly <strong>4</strong> digits
+          </mat-error>
+          </mat-form-field>
+      </div>
+      <div>
+        <mat-form-field class="manage-display">
+          <input matInput formControlName="program" (keypress)="numberOnly($event)" [(ngModel)]="program" name="program" id="program" placeholder="Program">
+          <mat-error *ngIf="!myForm.controls.program.valid">
+            Exactly <strong>2</strong> digits
+          </mat-error>
+          </mat-form-field>
+      </div>
+      <div>
+        <mat-form-field class="manage-display">
+          <input matInput formControlName="max_id" (keypress)="numberOnly($event)" [(ngModel)]="max_id" name="max_id" id="max_id" placeholder="Maximum ID">
+          <mat-error *ngIf="!myForm.controls.max_id.valid">
+            Exactly <strong>9</strong> digits
+          </mat-error>
+          </mat-form-field>
+      </div>
+    <div class="text-center">
+    <input type="submit" class="btn btn-primary" value="Generate Passwords and Send">
+  </div>
+  </form>
+</div>
