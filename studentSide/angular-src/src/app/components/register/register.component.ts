@@ -22,7 +22,7 @@ export class RegisterComponent implements OnInit {
   name : String;
   email : String;
   username : String;*/
-  
+
   constructor(
     private _fb: FormBuilder,
     private validateService: ValidateService,
@@ -30,7 +30,7 @@ export class RegisterComponent implements OnInit {
     private authService:AuthService,
     private router: Router
   ) { }
-  
+
   numberOnly(event): boolean {
     const charCode = (event.which) ? event.which : event.keyCode;
     if (charCode > 31 && (charCode < 48 || charCode > 57)) {
@@ -46,11 +46,11 @@ export class RegisterComponent implements OnInit {
       max_id: ['',[Validators.required, Validators.minLength(3), Validators.maxLength(3)]]
     })
   }
-  
+
   onRegisterSubmit(){
     console.log(this.myForm.value.batch);
     console.log(this.myForm.value.program);
-    this.myForm.value.max_id = '007';
+    this.myForm.value.max_id = '008';
     console.log(this.myForm.value.max_id)
     var totalMailsToSend = Number(this.myForm.value.max_id);
     var i;
@@ -86,9 +86,9 @@ export class RegisterComponent implements OnInit {
       });
 
     }
-    
+
 /*
-    
+
     const user = {
       name: this.name,
       email: this.email,
@@ -121,15 +121,15 @@ export class RegisterComponent implements OnInit {
 */
   }
 
-  
+
 
   generatePassword() {
     var text = "";
     var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-  
+
     for (var i = 0; i < 10; i++)
       text += possible.charAt(Math.floor(Math.random() * possible.length));
-  
+
     return text;
   }
 }

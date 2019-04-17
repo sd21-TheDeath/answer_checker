@@ -28,7 +28,6 @@ export class ExamComponent implements OnInit {
   seconds : any;
   seconds_counter : any;
   times_up : any;
-  exam_ended: any;
   due_hour : any;
   due_min : any;
   due_sec : any;
@@ -42,8 +41,10 @@ export class ExamComponent implements OnInit {
   check_1 : String;
   check_2 : String;
   examCourses : any;
-  submitted_flag : any;
+  submitted_flag : any;///////
+  arrOfStdProfile : any;///////
   dataOfAllExams : any;
+  dataOfAllSubmissions: any;
   constructor(
     private authservice:AuthService,
     private testservice: TestService,
@@ -58,6 +59,13 @@ export class ExamComponent implements OnInit {
     this.myForm = this._fb.group({
       ansSet : this._fb.array([])
     });
+
+    this.authservice.getStudentProfile(JSON.parse(localStorage.getItem('user')).username).subscribe(profile => {
+      // console.log(profile);
+      this.dataOfAllSubmissions = Array(profile.length);
+      this.dataOfAllSubmissions = profile;
+    });
+
     if(localStorage.getItem('examTaken')){
       //console.log(JSON.parse(localStorage.getItem('ansSet')));
       //console.log('111111111');
@@ -68,9 +76,10 @@ export class ExamComponent implements OnInit {
       // var j;
       // this.myForm.setValue(obj);
     }
-    this.myForm.valueChanges.subscribe(formData => {
-      localStorage.setItem('ansSet', JSON.stringify(formData));
-    });
+    // this.myForm.valueChanges.subscribe(formData => {
+    //   console.log(formData);
+    //   localStorage.setItem('ansSet', JSON.stringify(formData));
+    // });
 
     let json = {
       batch : "2016",
@@ -82,13 +91,21 @@ export class ExamComponent implements OnInit {
       this.dataOfAllExams = data;
       this.examCourses = Array(data.tests.length);
       this.times_up = Array(data.tests.length);
-      this.exam_ended = Array(data.tests.length);
       this.submitted_flag = Array(data.tests.length);
       var i;
       var d = new Date();
       for(i=0; i<data.tests.length; i++){
-        this.exam_ended[i]=false;
         this.submitted_flag[i]=false;
+        var found = this.dataOfAllSubmissions.find(function(ele){
+          return ((ele.batch==data.tests[i].batch) &&
+                  (ele.program==data.tests[i].program) &&
+                  (ele.code==data.tests[i].code) &&
+                  (ele.exam_number==data.tests[i].number));
+        });
+        if(found){
+          this.submitted_flag[i]=true;
+          console.log(i+" Submitted");
+        }
         this.starting_hour = Number(data.tests[i].starthh);
         this.starting_min = Number(data.tests[i].startmm);
         this.starting_sec = Number(data.tests[i].startss);
@@ -112,9 +129,8 @@ export class ExamComponent implements OnInit {
         if(this.seconds_counter<=0){
           this.times_up[i]=true;
           if(time_left<=0){
-            this.exam_ended[i]=true;
             if(this.submitted_flag[i]==false){
-              this.onAnswerSubmitClick(i);
+              this.submitted_flag[i]=true;
             }
             this.examCourses[i] = {
               "code": data.tests[i].code,
@@ -160,6 +176,7 @@ export class ExamComponent implements OnInit {
       setInterval(() => {
         for(i=0; i<data.tests.length; i++){
           if(this.times_up[i]){
+            //console.log(time_left);
             if(time_left<=0){
               //do nothing
             }
@@ -180,7 +197,7 @@ export class ExamComponent implements OnInit {
               this.examCourses[i].remmm=0;
               this.examCourses[i].remhh=0;
               if(this.submitted_flag[i]==false){
-                this.onAnswerSubmitClick(i);
+                // this.onAnswerSubmitClick(i);
               }
             }
           }
@@ -278,14 +295,17 @@ export class ExamComponent implements OnInit {
   initAnswer(temp: string, i: number){
     //console.log(temp);
     var obj='';
+    console.log(i);
+    // console.log(JSON.parse(localStorage.getItem('ansSet')).ansSet);
     if(localStorage.getItem('ansSet')) {
       obj = JSON.parse(localStorage.getItem('ansSet')).ansSet[i].ans;
     }
-    console.log(obj);
+    //console.log(obj);
     return this._fb.group({
       question: [temp],
       ans: [obj],
     });
+    //console.log("ac");
   }
 
   addAnswer(temp: string, i: number){
@@ -328,11 +348,15 @@ export class ExamComponent implements OnInit {
     this.starting_min = Number(this.dataOfAllExams.tests[arg].startmm);
     this.starting_sec = Number(this.dataOfAllExams.tests[arg].startss);
     this.examSelected = true;
-    console.log(this.questions);
+    //console.log(this.questions);
     var i;
     for(i=0; i<this.questions.length; i++){
       this.addAnswer(this.questions[i].q,i);
     }
+    this.myForm.valueChanges.subscribe(formData => {
+      console.log(formData);
+      localStorage.setItem('ansSet', JSON.stringify(formData));
+    });
     var d = new Date();
     this.seconds = (this.starting_hour - d.getHours())*3600 + (this.starting_min - d.getMinutes())*60 + (this.starting_sec-d.getSeconds());
     this.seconds_counter = this.seconds;
@@ -362,12 +386,44 @@ export class ExamComponent implements OnInit {
   }
 
   onAnswerSubmitClick(i: number){
-
+    console.log("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
     //clear the local storage and change the booleans
 
     // console.log(this.myForm.value)
-    console.log(i);
-    this.submitted_flag[i]=true;
+    if(this.submitted_flag[i]==false){
+      console.log(i);
+      this.submitted_flag[i]=true;
+      let rawJson = JSON.parse(localStorage.getItem('user'));
+      console.log("1");
+      let sum=0;
+      var j;
+      for(j=0; j<this.questions.length; j++){
+        sum += Number(this.questions[j].m);
+      }
+      console.log("2");
+      let json = {
+        sid : rawJson.name,
+        name : rawJson.name,
+        email : rawJson.email,
+        batch : this.dataOfAllExams.tests[i].batch,
+        program : this.dataOfAllExams.tests[i].program,
+        code : this.dataOfAllExams.tests[i].code,
+        exam_number : this.dataOfAllExams.tests[i].number,
+        marks : "15",
+        total_marks : "100"
+      }
+      console.log("3");
+      this.authservice.storeStudentProfile(json).subscribe(data => {
+        console.log("*************\n" + data);
+        console.log("4");
+        localStorage.removeItem('ansSet');
+        localStorage.removeItem('examTaken');
+        localStorage.removeItem('examChosen');
+        this.router.navigate(['']);
+        // this.ngOnInit();
+      });
+
+    }
     // const answers = {
     //   check_1 : (<HTMLInputElement>document.getElementById("answer1")).value,
     //   check_2 : (<HTMLInputElement>document.getElementById("answer2")).value

@@ -62,6 +62,7 @@ const TestSchema = mongoose.Schema({
     description: {
       type: String
     }
+    //total_marks
   });
 
   const Test = module.exports = mongoose.model('Test', TestSchema);

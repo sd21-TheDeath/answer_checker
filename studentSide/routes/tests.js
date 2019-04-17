@@ -53,7 +53,7 @@ router.post('/createtest',(req,res,next)=>{
 router.post('/gettest', (req, res, next) => {
 
     Test.find({"batch":req.body.batch, "program" : req.body.program}, function(err, d) {
-        console.log(d)
+        //console.log(d)
         res.json({success:true, tests : d});
     });
 

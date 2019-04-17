@@ -4,6 +4,7 @@ const passport = require('passport');
 const jwt = require('jsonwebtoken');
 
 const User = require('../models/user');
+const Student = require('../models/student');
 const config = require('../config/database');
 var nodemailer = require('nodemailer')
 // var email   = require("emailjs");
@@ -25,7 +26,7 @@ router.post('/register', (req, res, next) => {
         else{
           console.log("send mail")
           console.log("at runpy");
-  
+
           var spawn = require("child_process").spawn;
           var process = spawn('python', ["./sendMail.py",
             // newUser.username,
@@ -109,6 +110,37 @@ router.post('/profile', (req, res, next) => {
         email : user.email
       }
     })
+  })
+});
+
+router.post('/studentprofile', (req, res, next) => {
+  Student.getStudentBySid(req.body.headers.requestedUsername, (err, studentProfile) => {
+    if(err) throw err;
+    console.log(studentProfile);
+    res.json(studentProfile);
+  });
+});
+
+router.post('/storestudentprofile', (req, res, next) => {
+  console.log(req.body);
+  let student = new Student({
+    sid : req.body.sid,
+    name : req.body.name,
+    email : req.body.email,
+    batch : req.body.batch,
+    program : req.body.program,
+    code : req.body.code,
+    exam_number : req.body.exam_number,
+    marks : req.body.marks,
+    total_marks : req.body.total_marks
+  });
+  Student.addStudent(student, (err, s) => {
+    if(err){
+      console.log("error storing user cred")
+    }
+    else{
+      res.json({success:true, msg : 'user cred saved successfully\n'})
+    }
   })
 });
 

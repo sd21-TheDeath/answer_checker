@@ -4,7 +4,7 @@ import { map } from 'rxjs/operators';
 import { totalmem } from 'os';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject'
 import { tokenNotExpired } from 'angular2-jwt'
-// import { HttpHeaders } from '@angular/common/http'; 
+// import { HttpHeaders } from '@angular/common/http';
 @Injectable()
 export class AuthService {
   authToken : any;
@@ -38,6 +38,21 @@ export class AuthService {
     headers.append('Content-Type', 'application/json');
     headers.append('requestedUsername', username);
     return this.http.post('http://localhost:3000/users/profile', {headers:headers})
+    .map(res => res.json());
+  }
+
+  getStudentProfile(username){
+    let headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    headers.append('requestedUsername', username);
+    return this.http.post('http://localhost:3000/users/studentprofile', {headers:headers})
+    .map(res => res.json());
+  }
+
+  storeStudentProfile(json){
+    let headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    return this.http.post('http://localhost:3000/users/storestudentprofile',json, {headers:headers})
     .map(res => res.json());
   }
 

@@ -8,10 +8,10 @@
           <span style="color: #60a398; font-size: medium;">{{course.description}}</span>
         </div>
         <mat-card-subtitle>
-          <div *ngIf="times_up[i]==true && exam_ended[i]==false">
+          <div *ngIf="times_up[i]==true && submitted_flag[i]==false">
             <span>Exam is going on</span>
           </div>
-          <div *ngIf="times_up[i]==true && exam_ended[i]==true">
+          <div *ngIf="times_up[i]==true && submitted_flag[i]==true">
             <span>Exam has ended</span>
           </div>
           <div *ngIf="times_up[i]==false">
@@ -21,19 +21,22 @@
       </mat-card-header>
       <!-- <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu"> -->
       <mat-card-content>
-        <div *ngIf="times_up[i]==false" style="color: #673ab7; font-size: x-large; text-align: center;">
+        <div *ngIf="times_up[i]==false && submitted_flag[i]==false" style="color: #673ab7; font-size: x-large; text-align: center;">
           <span style="color: #8a7659; font-size: large">Starts in: </span>{{course.due_hour}} : {{course.due_min}} : {{course.due_sec}}
         </div>
-        <div *ngIf="times_up[i]==true && exam_ended[i]==false" style= "color: #673ab7; font-size: x-large; text-align: center;">
+        <div *ngIf="times_up[i]==true && submitted_flag[i]==false" style= "color: #673ab7; font-size: x-large; text-align: center;">
           <span style="color: #8a7659; font-size: large">Ends in: </span>{{course.remhh}} : {{course.remmm}} : {{course.remss}}
         </div>
-        <div *ngIf="times_up[i]==true && exam_ended[i]==true" style="color: #673ab7; font-size: x-large; text-align: center;">
-          <span style="color: #8a7659; font-size: large">Come back later..</span>
+        <div *ngIf="submitted_flag[i]==true" style="color: #673ab7; font-size: x-large; text-align: center;">
+          <span style="color: #8a7659; font-size: large">Exam has ended</span>
         </div>
+        <!-- <div *ngIf="times_up[i]==true && submitted_flag[i]==true" style="color: #673ab7; font-size: x-large; text-align: center;">
+          <span style="color: #8a7659; font-size: large">You have already submitted the exam..</span>
+        </div> -->
       </mat-card-content>
       <mat-card-actions style="text-align: center !important;">
-        <button mat-raised-button type="button" mat-button *ngIf="times_up[i]==true && exam_taken==false && exam_ended[i]==false" (click)="onButtonClick(i)">Take Exam</button>
-        <button mat-raised-button disabled type="button" mat-button *ngIf="!(times_up[i]==true && exam_taken==false && exam_ended[i]==false)" (click)="onButtonClick(i)">Take Exam</button>
+        <button mat-raised-button type="button" mat-button *ngIf="times_up[i]==true && exam_taken==false && submitted_flag[i]==false" (click)="onButtonClick(i)">Take Exam</button>
+        <button mat-raised-button disabled type="button" mat-button *ngIf="!(times_up[i]==true && exam_taken==false && submitted_flag[i]==false)" (click)="onButtonClick(i)">Take Exam</button>
         <!-- <button type="button" mat-button>Set Reminder</button> -->
       </mat-card-actions>
     </mat-card>
