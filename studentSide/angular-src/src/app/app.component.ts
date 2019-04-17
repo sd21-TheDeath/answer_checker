@@ -19,7 +19,7 @@ export class AppComponent implements OnInit{
     this.authservice.castProfessor.subscribe(professorLoggedIn => this.dummyProfessorLoggedIn = professorLoggedIn);
     this.authservice.castAdmin.subscribe(adminLoggedIn => this.dummyAdminLoggedIn = adminLoggedIn)
     // localStorage.clear();
-    if(localStorage.length != 0){
+    if(localStorage.getItem("user")){
     var a = localStorage.getItem("user")
     console.log("**************************")
     console.log(a)

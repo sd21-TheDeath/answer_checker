@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {AuthService} from '../../services/auth.service';
 import {Router} from '@angular/router';
+import { Validators, FormGroup, FormArray, FormBuilder } from '@angular/forms';
 import {FlashMessagesService} from 'angular2-flash-messages';
 
 @Component({
@@ -9,32 +10,57 @@ import {FlashMessagesService} from 'angular2-flash-messages';
   styleUrls: ['./changepassword.component.css']
 })
 export class ChangepasswordComponent implements OnInit {
+  public myForm: FormGroup;
   username : String;
-  password : String;
-  newPassword : String;
+  //password : String;
+  //newPassword : String;
+  user : Object;
+  userPresent = false;
   constructor(
+    private _fb: FormBuilder,
     private authservice:AuthService,
     private router : Router,
     private flashmessage : FlashMessagesService) { }
 
   ngOnInit() {
+    this.myForm = this._fb.group({
+      password: ['',[Validators.required]],
+      newPassword: ['',[Validators.required]]
+    })
+
+    let myString = localStorage.getItem('user');
+    //console.log(myString);
+    if(myString){
+    let myObjUser = JSON.parse(localStorage.getItem('user'));
+    this.authservice.getProfile(myObjUser.username).subscribe(profile => {
+      this.user = profile.user;
+      this.username = profile.user.username;
+      // console.log(this.username);
+      this.userPresent = true;
+    },
+    err => {
+      //console.log(err);
+      this.userPresent = false;
+      return false;
+    });
+    }
   }
 
   changePassword(){
     
     const user = {
       username : this.username,
-      password : this.password
+      password : this.myForm.value.password
     }
-
+    //console.log(user.username);
     this.authservice.authenticateUser(user).subscribe(data => {
       if(data.success){
         this.authservice.storeUserData(data.token, data.user);
-        if(data.user.profession == "student"){
+        if(data.user.username == user.username){
           const jsonToSend = {
             username : this.username,
-            password : this.password,
-            newPassword : this.newPassword
+            password : this.myForm.value.password,
+            newPassword : this.myForm.value.newPassword
           }
 
           this.authservice.changePassword(jsonToSend).subscribe(data => {
@@ -42,7 +68,7 @@ export class ChangepasswordComponent implements OnInit {
               localStorage.clear();
               this.authservice.userIsNowLoggedOut();
               this.authservice.logout();
-              this.flashmessage.show('password changed successfully', {
+              this.flashmessage.show('password changed successfully. Please, login again using new password', {
                 cssClass : 'alert-success',
                 timeout:1500
               })
@@ -55,7 +81,6 @@ export class ChangepasswordComponent implements OnInit {
             cssClass : 'alert-danger',
             timeout:1500});
         }
-        this.router.navigate(['dashboard']);
       }else{
         this.flashmessage.show(data.msg, {
           cssClass : 'alert-danger',

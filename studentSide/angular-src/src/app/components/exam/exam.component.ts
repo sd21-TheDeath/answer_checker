@@ -34,6 +34,7 @@ export class ExamComponent implements OnInit {
   due_sec : any;
   q1 : string;
   q2 : string;
+  exam_num : number;
   examSelected = false;
   exam_taken = false;
   anyAnsSaved = false;
@@ -41,6 +42,7 @@ export class ExamComponent implements OnInit {
   check_1 : String;
   check_2 : String;
   examCourses : any;
+  submitted_flag : any;
   dataOfAllExams : any;
   constructor(
     private authservice:AuthService,
@@ -81,10 +83,12 @@ export class ExamComponent implements OnInit {
       this.examCourses = Array(data.tests.length);
       this.times_up = Array(data.tests.length);
       this.exam_ended = Array(data.tests.length);
+      this.submitted_flag = Array(data.tests.length);
       var i;
       var d = new Date();
       for(i=0; i<data.tests.length; i++){
         this.exam_ended[i]=false;
+        this.submitted_flag[i]=false;
         this.starting_hour = Number(data.tests[i].starthh);
         this.starting_min = Number(data.tests[i].startmm);
         this.starting_sec = Number(data.tests[i].startss);
@@ -109,6 +113,9 @@ export class ExamComponent implements OnInit {
           this.times_up[i]=true;
           if(time_left<=0){
             this.exam_ended[i]=true;
+            if(this.submitted_flag[i]==false){
+              this.onAnswerSubmitClick(i);
+            }
             this.examCourses[i] = {
               "code": data.tests[i].code,
               "due_hour": "0",
@@ -116,7 +123,8 @@ export class ExamComponent implements OnInit {
               "due_sec": "0",
               "remhh": "0",
               "remmm": "0",
-              "remss": "0"
+              "remss": "0",
+              "description": data.tests[i].description
             }
           }
           else{
@@ -127,7 +135,8 @@ export class ExamComponent implements OnInit {
               "due_sec": "0",
               "remhh": r_h,
               "remmm": r_m,
-              "remss": r_s
+              "remss": r_s,
+              "description": data.tests[i].description
             }
           }
         }
@@ -142,7 +151,8 @@ export class ExamComponent implements OnInit {
             "due_sec": this.due_sec,
             "remhh": data.tests[i].durationhh,
             "remmm": data.tests[i].durationmm,
-            "remss": data.tests[i].durationss
+            "remss": data.tests[i].durationss,
+            "description": data.tests[i].description
           }
           this.times_up[i]=false;
         }
@@ -165,6 +175,14 @@ export class ExamComponent implements OnInit {
               this.examCourses[i].remmm=59;
               this.examCourses[i].remhh--;
             }
+            else{
+              this.examCourses[i].remss=0;
+              this.examCourses[i].remmm=0;
+              this.examCourses[i].remhh=0;
+              if(this.submitted_flag[i]==false){
+                this.onAnswerSubmitClick(i);
+              }
+            }
           }
           else if(this.examCourses[i].due_sec>0){
             this.examCourses[i].due_sec--;
@@ -180,6 +198,9 @@ export class ExamComponent implements OnInit {
           }
           else{
             this.times_up[i]=true;
+            this.examCourses[i].due_sec=0;
+            this.examCourses[i].due_min=0;
+            this.examCourses[i].due_hour=0;
           }
         }
       },1000);
@@ -331,6 +352,7 @@ export class ExamComponent implements OnInit {
   onButtonClick(i: number){
     // document.getElementById("takeExamButton").style.display = "none";
     this.exam_taken = true;
+    this.exam_num = i;
     console.log(i);
     localStorage.setItem('examTaken',"true");
     localStorage.setItem('examChosen', String(i));
@@ -339,11 +361,13 @@ export class ExamComponent implements OnInit {
     this.courseSelection(i);
   }
 
-  onAnswerSubmitClick(){
+  onAnswerSubmitClick(i: number){
 
     //clear the local storage and change the booleans
 
-    console.log(this.myForm.value)
+    // console.log(this.myForm.value)
+    console.log(i);
+    this.submitted_flag[i]=true;
     // const answers = {
     //   check_1 : (<HTMLInputElement>document.getElementById("answer1")).value,
     //   check_2 : (<HTMLInputElement>document.getElementById("answer2")).value

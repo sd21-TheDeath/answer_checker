@@ -22,7 +22,9 @@ router.post('/createtest',(req,res,next)=>{
         startss: req.body.startss,
         durationhh: req.body.durationhh,
         durationmm: req.body.durationmm,
-        durationss: req.body.durationss
+        durationss: req.body.durationss,
+        tags: req.body.tags,
+        description: req.body.description
     });
     Test.count({batch: req.body.batch,
     program: req.body.program,
@@ -31,7 +33,7 @@ router.post('/createtest',(req,res,next)=>{
         console.log("count: ",count); // problem with number
         //console.log(err);
         newTest.startdate = moment(newTest.startdate).format('MM/DD/YYYY');
-        console.log("data: ",newTest);
+        //console.log("data: ",newTest);
         Test.addTest(newTest, (err)=>{
             if(err){
                 res.json({success:false, msg: "Create Test Failed\n"});
@@ -51,7 +53,7 @@ router.post('/createtest',(req,res,next)=>{
 router.post('/gettest', (req, res, next) => {
 
     Test.find({"batch":req.body.batch, "program" : req.body.program}, function(err, d) {
-        // console.log(d)
+        console.log(d)
         res.json({success:true, tests : d});
     });
 

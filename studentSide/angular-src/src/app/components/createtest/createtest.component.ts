@@ -4,6 +4,12 @@ import { Validators, FormGroup, FormArray, FormBuilder } from '@angular/forms';
 //import { collectAndResolveStyles } from '@angular/core/src/animation/animation_style_util';
 import {FlashMessagesService} from 'angular2-flash-messages';
 import {Router} from '@angular/router';
+import {MatChipInputEvent} from '@angular/material';
+import {COMMA, ENTER} from '@angular/cdk/keycodes';
+
+export interface Tag {
+  name: string
+}
 
 @Component({
   selector: 'app-createtest',
@@ -13,6 +19,12 @@ import {Router} from '@angular/router';
 export class CreatetestComponent implements OnInit {
   public myForm: FormGroup; // our form model
   panelOpenState = false;
+  visible = true;
+  selectable = true;
+  removable = true;
+  addOnBlur = true;
+  readonly separatorKeysCodes: number[] = [ENTER, COMMA];
+  tags: Tag[] = [];
   constructor(private _fb: FormBuilder,
     private testservice:TestService,
     private flashmessage : FlashMessagesService,
@@ -34,7 +46,7 @@ export class CreatetestComponent implements OnInit {
           qset: this._fb.array([
             this.initQuestion(),
           ]),
-          tags: ['',[Validators.required]],
+          tags: this._fb.array([]),
           description: ['',[Validators.required]]
       });
   }
@@ -58,6 +70,14 @@ export class CreatetestComponent implements OnInit {
   }
 
   onCreateTestSubmit(){
+    console.log(this.tags);
+    var j;
+    for(j=0; j<this.tags.length; j++){
+      const control = <FormArray>this.myForm.controls['tags'];
+      control.push(this._fb.group({
+        name: [this.tags[j].name]
+      }));
+    }
     const test = this.myForm.value;
     console.log(test);
     this.testservice.createTest(test).subscribe(data => {
@@ -75,5 +95,28 @@ export class CreatetestComponent implements OnInit {
           timeout:3000});
       }
     });
+  }
+
+  add(event: MatChipInputEvent): void {
+    const input = event.input;
+    const value = event.value;
+
+    // Add our fruit
+    if ((value || '').trim()) {
+      this.tags.push({name: value.trim()});
+    }
+
+    // Reset the input value
+    if (input) {
+      input.value = '';
+    }
+  }
+
+  remove(tag: Tag): void {
+    const index = this.tags.indexOf(tag);
+
+    if (index >= 0) {
+      this.tags.splice(index, 1);
+    }
   }
 }

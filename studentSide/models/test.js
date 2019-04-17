@@ -55,6 +55,12 @@ const TestSchema = mongoose.Schema({
     durationss: {
       type: String,
       required: true
+    },
+    tags: [{
+      name: String
+    }],
+    description: {
+      type: String
     }
   });
 
@@ -65,7 +71,7 @@ const TestSchema = mongoose.Schema({
   }
 
   module.exports.addTest = function(newTest,callback){
-    //console.log(newTest);
+    console.log(newTest);
     newTest.save(callback);
   }
 

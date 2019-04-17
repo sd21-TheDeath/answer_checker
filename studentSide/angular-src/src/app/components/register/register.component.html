@@ -1,5 +1,3 @@
-
-
 <div class="jumbotron text-center">
     <img src="http://i66.tinypic.com/11r7i8h.png" alt="daiict" height="100" width="100" class="center">
     <h2 class="page-header">Batch Registration</h2>
@@ -8,7 +6,8 @@
   <form [formGroup]="myForm" (submit)="onRegisterSubmit()">
       <div>
         <mat-form-field class="manage-display">
-          <input matInput formControlName="batch" (keypress)="numberOnly($event)" [(ngModel)]="batch" name="batch" id="batch" placeholder="Batch">
+          <input matInput formControlName="batch" (keypress)="numberOnly($event)" [(ngModel)]="batch" name="batch" id="batch" placeholder="Batch"
+          minlength="4" maxlength="4" required>
           <mat-error *ngIf="!myForm.controls.batch.valid">
             Exactly <strong>4</strong> digits
           </mat-error>
@@ -16,20 +15,24 @@
       </div>
       <div>
         <mat-form-field class="manage-display">
-          <input matInput formControlName="program" (keypress)="numberOnly($event)" [(ngModel)]="program" name="program" id="program" placeholder="Program">
+          <input matInput formControlName="program" (keypress)="numberOnly($event)" [(ngModel)]="program" name="program" id="program" placeholder="Program"
+          minlength="2" maxlength="2" required>
           <mat-error *ngIf="!myForm.controls.program.valid">
             Exactly <strong>2</strong> digits
           </mat-error>
           </mat-form-field>
       </div>
       <div>
-        <mat-form-field class="manage-display">
-          <input matInput formControlName="max_id" (keypress)="numberOnly($event)" [(ngModel)]="max_id" name="max_id" id="max_id" placeholder="Maximum ID">
+        <mat-form-field class="manage-display noselect">
+          <input matInput formControlName="max_id" (keypress)="numberOnly($event)" [(ngModel)]="max_id" name="max_id" id="max_id" 
+          placeholder="Maximum ID" minlength="3" maxlength="3" required>
+          <span matPrefix>{{this.myForm.value.batch}}{{this.myForm.value.program}}</span>
           <mat-error *ngIf="!myForm.controls.max_id.valid">
             Exactly <strong>9</strong> digits
           </mat-error>
           </mat-form-field>
       </div>
+      
     <div class="text-center">
     <input type="submit" class="btn btn-primary" value="Generate Passwords and Send">
   </div>

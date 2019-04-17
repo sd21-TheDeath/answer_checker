@@ -22,7 +22,7 @@ export class RegisterComponent implements OnInit {
   name : String;
   email : String;
   username : String;*/
-
+  
   constructor(
     private _fb: FormBuilder,
     private validateService: ValidateService,
@@ -37,26 +37,25 @@ export class RegisterComponent implements OnInit {
       return false;
     }
     return true;
-
   }
+
   ngOnInit() {
     this.myForm = this._fb.group({
       batch: ['',[Validators.required, Validators.minLength(4), Validators.maxLength(4)]],
       program: ['',[Validators.required, Validators.minLength(2), Validators.maxLength(2)]],
-      max_id: ['',[Validators.required, Validators.minLength(9), Validators.maxLength(9)]]
+      max_id: ['',[Validators.required, Validators.minLength(3), Validators.maxLength(3)]]
     })
   }
   
   onRegisterSubmit(){
-    console.log(this.myForm.value.batch)
-    console.log(this.myForm.value.program)
-    this.myForm.value.max_id = '201601007';
+    console.log(this.myForm.value.batch);
+    console.log(this.myForm.value.program);
+    this.myForm.value.max_id = '007';
     console.log(this.myForm.value.max_id)
-
-    var totalMailsToSend = Number((Number(this.myForm.value.max_id) - (Number(this.myForm.value.batch)*100 + Number(this.myForm.value.program))*1000))
+    var totalMailsToSend = Number(this.myForm.value.max_id);
     var i;
     var prefixInInteger = Number(Number(this.myForm.value.batch)*100 + Number(this.myForm.value.program))*1000
-    for (i = 0; i < totalMailsToSend; i++) {
+    for (i = 1; i <= totalMailsToSend; i++) {
       const user = {
         name: (prefixInInteger + i).toString(),
         email: (prefixInInteger + i).toString() + '@daiict.ac.in',
@@ -121,6 +120,8 @@ export class RegisterComponent implements OnInit {
     });
 */
   }
+
+  
 
   generatePassword() {
     var text = "";

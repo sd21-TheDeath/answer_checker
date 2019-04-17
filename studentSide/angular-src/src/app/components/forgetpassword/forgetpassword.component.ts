@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {AuthService} from '../../services/auth.service';
+import { Validators, FormGroup, FormArray, FormBuilder } from '@angular/forms';
 import {Router} from '@angular/router';
 import {FlashMessagesService} from 'angular2-flash-messages';
 
@@ -10,14 +11,15 @@ import {FlashMessagesService} from 'angular2-flash-messages';
   styleUrls: ['./forgetpassword.component.css']
 })
 export class ForgetpasswordComponent implements OnInit {
-
+  public myForm: FormGroup;
   otpGenerated = false;
   otpMatched = false;
-  otpEntered : String;
-  username : String;
+  //otpEntered : String;
+  //username : String;
   otpGen : String;
-  newPassword : String;
+  //newPassword : String;
   constructor(
+    private _fb: FormBuilder,
     private authserive : AuthService,
     private router : Router,
     private flashmessage : FlashMessagesService
@@ -30,15 +32,28 @@ export class ForgetpasswordComponent implements OnInit {
       return false;
     }
     return true;
-
   }
+
+  noEnter(event): boolean {
+    const charCode = (event.which) ? event.which : event.keyCode;
+    if(charCode == 13) {
+      return false;
+    }
+    return true;
+  }
+
   ngOnInit() {
+    this.myForm = this._fb.group({
+      username: ['',[Validators.required]],
+      otpEntered: ['',[Validators.required, Validators.minLength(4), Validators.maxLength(4)]],
+      newPassword: ['',[Validators.required]]
+    })
   }
 
   generateOTPclick(){
     this.otpGen = this.generateOTP();
     let json = {
-      username : this.username,
+      username : this.myForm.value.username,
       otp : this.otpGen};
     this.authserive.generateOTP(json).subscribe(data => {
       if(data.success){
@@ -54,7 +69,7 @@ export class ForgetpasswordComponent implements OnInit {
   matchOTPclick(){
     this.otpGen = "0000";
 
-    if(this.otpEntered == this.otpGen){
+    if(this.myForm.value.otpEntered == this.otpGen){
       this.otpMatched = true;
     }
     else{
@@ -67,26 +82,33 @@ export class ForgetpasswordComponent implements OnInit {
   }
 
   changePassword(){
-    console.log(this.newPassword)
+    //console.log(this.myForm.value.newPassword)
     let json = {
-      username : this.username,
-      newPassword : this.newPassword
+      username : this.myForm.value.username,
+      newPassword : this.myForm.value.newPassword
     }
-    this.authserive.changePasswordThroughOTP(json).subscribe(data => {
-      if(data.success){
-        this.flashmessage.show('Password changed successfully', {
-          cssClass : 'alert-success',
-          timeout:1500
-        });
-      }
-      else{
-        this.flashmessage.show(data.msg, {
-          cssClass : 'alert-danger',
-          timeout:1500
-        });
-      }
-      this.router.navigate(['/login']);
-    });
+    if(json.username==undefined || json.newPassword==undefined) {
+      this.flashmessage.show('Username and New Password are required', {
+        cssClass : 'alert-danger',
+        timeout:1500});
+    }
+    else {
+      this.authserive.changePasswordThroughOTP(json).subscribe(data => {
+        if(data.success){
+          this.flashmessage.show('Password changed successfully', {
+            cssClass : 'alert-success',
+            timeout:1500
+          });
+        }
+        else{
+          this.flashmessage.show(data.msg, {
+            cssClass : 'alert-danger',
+            timeout:1500
+          });
+        }
+        this.router.navigate(['/login']);
+      });
+    }
   }
 
   generateOTP() {

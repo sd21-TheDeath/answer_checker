@@ -98,16 +98,26 @@
                         </mat-form-field>
                     </div>
                     <br />
-                    <div ng-app="myApp">
-                      <tags-input ng-model="tags"></tags-input>
-                    </div>
-                    <script type="text/javascript" src="../../../node_modules/angular/angular.min.js"></script>
-                    <script type="text/javascript" src="../../../node_modules/ng-tags-input/build/ng-tags-input.min.js"></script>
-                    <script>
-                      var app =  angular.module('myApp', ['ngTagsInput']);
-                    </script>
+
                     <div>
-                      <mat-form-field>
+                      <mat-form-field style="width: 100% !important">
+                        <mat-chip-list #chipList>
+                          <mat-chip *ngFor="let tag of tags" [selectable]="selectable"
+                                   [removable]="removable" (removed)="remove(tag)">
+                            {{tag.name}}
+                            <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                          </mat-chip>
+                          <input placeholder="Add tag...(Press Enter)"
+                                 [matChipInputFor]="chipList"
+                                 [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                                 [matChipInputAddOnBlur]="addOnBlur"
+                                 (matChipInputTokenEnd)="add($event)">
+                        </mat-chip-list>
+                      </mat-form-field>
+                    </div>
+
+                    <div>
+                      <mat-form-field style="width: 100% !important">
                         <textarea matInput formControlName="description"
                                   cdkTextareaAutosize
                                   #autosize="cdkTextareaAutosize"

@@ -7,12 +7,15 @@
           <span class="navbar-toggler-icon"></span>
         </button>
     <div class="collapse navbar-collapse" id="navbarResponsive">
-      <ul class="navbar-nav ml-auto">
-        <li class="nav-item active">
+      <ul class="nav navbar-nav navbar-left">
+        <li class="nav-item">
           <a class="nav-link" [routerLink] = "['/']">Home
                 <span class="sr-only">(current)</span>
               </a>
         </li>
+        <!-- [routerLinkActive]="['active']" [routerLinkActiveOption] = "{exact:true}" -->
+      </ul>
+      <ul class="nav navbar-nav ml-auto">
         <li class="nav-item" *ngIf="false">
           <a class="nav-link" [routerLink] = "['/dashboard']">Dashboard</a>
         </li>

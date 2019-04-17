@@ -12,6 +12,7 @@ import {CdkStepperModule} from '@angular/cdk/stepper';
 import {MatStepperModule} from '@angular/material';
 import {MatTabsModule} from '@angular/material/tabs';
 import {MatCardModule} from '@angular/material/card';
+import {MatChipsModule} from '@angular/material/chips';
 
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
@@ -72,6 +73,7 @@ const appRoutes: Routes =  [
     CdkStepperModule,
     MatStepperModule,
     MatCardModule,
+    MatChipsModule,
     ReactiveFormsModule,
     FormsModule,
     HttpModule,
@@ -90,6 +92,7 @@ const appRoutes: Routes =  [
     CdkStepperModule,
     MatTabsModule,
     MatCardModule,
+    MatChipsModule,
     MatStepperModule
   ],
   bootstrap: [AppComponent]

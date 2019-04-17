@@ -34,41 +34,48 @@ export class LoginComponent implements OnInit {
 
   onLoginSubmit(){
     const user = this.myForm.value;
-
-    this.authservice.authenticateUser(user).subscribe(data => {
-      // console.log(data)
-      if(data.success){
-        // this.navBar.userIsNowLoggedIn();
-        this.authservice.storeUserData(data.token, data.user);
-        // this.flashmessage.show('You are now logged in', {
-        //   cssClass : 'alert-success',
-        //   timeout:1500});
-        if(data.user.profession == "student"){
-          this.authservice.studentIsNowLoggedIn();
-          this.flashmessage.show('student logged in', {
-            cssClass : 'alert-success',
+    //console.log(user.username==undefined);
+    if(user.username==undefined || user.password==undefined) {
+      this.flashmessage.show('Username and Password are required', {
+        cssClass : 'alert-danger',
+        timeout:1500});
+    }
+    else {
+      this.authservice.authenticateUser(user).subscribe(data => {
+        // console.log(data)
+        if(data.success){
+          // this.navBar.userIsNowLoggedIn();
+          this.authservice.storeUserData(data.token, data.user);
+          // this.flashmessage.show('You are now logged in', {
+          //   cssClass : 'alert-success',
+          //   timeout:1500});
+          if(data.user.profession == "student"){
+            this.authservice.studentIsNowLoggedIn();
+            this.flashmessage.show('student logged in', {
+              cssClass : 'alert-success',
+              timeout:1500});
+          }
+          else if(data.user.profession == "professor"){
+            this.authservice.professorIsNowLoggedIn();
+            this.flashmessage.show('professor logged in', {
+              cssClass : 'alert-success',
+              timeout:1500});
+          }
+          else if(data.user.profession == "admin"){
+            this.authservice.adminIsNowLoggedIn();
+            this.flashmessage.show('admin logged in', {
+              cssClass : 'alert-success',
+              timeout:1500});
+          }
+          this.router.navigate(['dashboard']);
+        }else{
+          this.flashmessage.show(data.msg, {
+            cssClass : 'alert-danger',
             timeout:1500});
+          this.router.navigate(['login']);
         }
-        else if(data.user.profession == "professor"){
-          this.authservice.professorIsNowLoggedIn();
-          this.flashmessage.show('professor logged in', {
-            cssClass : 'alert-success',
-            timeout:1500});
-        }
-        else if(data.user.profession == "admin"){
-          this.authservice.adminIsNowLoggedIn();
-          this.flashmessage.show('admin logged in', {
-            cssClass : 'alert-success',
-            timeout:1500});
-        }
-        this.router.navigate(['dashboard']);
-      }else{
-        this.flashmessage.show(data.msg, {
-          cssClass : 'alert-danger',
-          timeout:1500});
-        this.router.navigate(['login']);
-      }
-    } )
+      } )
+    }
   }
 
   forgetPassword(){

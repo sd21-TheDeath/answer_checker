@@ -3,16 +3,19 @@
     <br />
     <mat-card style="background-color: ">
       <mat-card-header>
-        <mat-card-title >{{course.code}}</mat-card-title>
+        <mat-card-title>{{course.code}}</mat-card-title>
+        <div>
+          <span style="color: #60a398; font-size: medium;">{{course.description}}</span>
+        </div>
         <mat-card-subtitle>
           <div *ngIf="times_up[i]==true && exam_ended[i]==false">
-            Exam is going on
+            <span>Exam is going on</span>
           </div>
           <div *ngIf="times_up[i]==true && exam_ended[i]==true">
-            Exam has ended
+            <span>Exam has ended</span>
           </div>
           <div *ngIf="times_up[i]==false">
-            Upcoming Exam
+            <span>Upcoming Exam</span>
           </div>
         </mat-card-subtitle>
       </mat-card-header>
@@ -54,11 +57,14 @@
 
 
 <div *ngIf="exam_taken==true">
+<div style="color: #673ab7; font-size: x-large; text-align: right;">
+  <span style="color: #8a7659; font-size: large">Ends in: </span>{{examCourses[exam_num].remhh}} : {{examCourses[exam_num].remmm}} : {{examCourses[exam_num].remss}}
+</div>
 <div>
   <button *ngIf="pageRefreshed && anyAnsSaved" (click)="loadAnswers()">Load my Answers</button>
 </div>
 
-<form [formGroup]="myForm" (submit)="onAnswerSubmitClick()">
+<form [formGroup]="myForm" (submit)="onAnswerSubmitClick(exam_num)">
     <div formArrayName="ansSet">
     <mat-tab-group>
     <div *ngFor="let temp of myForm.controls.ansSet.controls, let i = index">
