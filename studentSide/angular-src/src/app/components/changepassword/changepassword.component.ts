@@ -3,6 +3,7 @@ import {AuthService} from '../../services/auth.service';
 import {Router} from '@angular/router';
 import { Validators, FormGroup, FormArray, FormBuilder } from '@angular/forms';
 import {FlashMessagesService} from 'angular2-flash-messages';
+import {MatSnackBar} from '@angular/material';
 
 @Component({
   selector: 'app-changepassword',
@@ -19,6 +20,7 @@ export class ChangepasswordComponent implements OnInit {
   constructor(
     private _fb: FormBuilder,
     private authservice:AuthService,
+    private snackBar: MatSnackBar,
     private router : Router,
     private flashmessage : FlashMessagesService) { }
 
@@ -68,23 +70,26 @@ export class ChangepasswordComponent implements OnInit {
               localStorage.clear();
               this.authservice.userIsNowLoggedOut();
               this.authservice.logout();
-              this.flashmessage.show('password changed successfully. Please, login again using new password', {
-                cssClass : 'alert-success',
-                timeout:1500
-              })
+              this.snackBar.open('password changed successfully. Please, login again using new password', 'Success', {
+                duration: 3000,
+              });
+              // this.flashmessage.show('password changed successfully. Please, login again using new password', {
+              //   cssClass : 'alert-success',
+              //   timeout:1500
+              // })
               this.router.navigate(['/login']);
             }
           });
         }
         else {
-          this.flashmessage.show('something went wrong', {
-            cssClass : 'alert-danger',
-            timeout:1500});
+          this.snackBar.open('something went wrong', 'Error', {
+            duration: 3000,
+          });
         }
       }else{
-        this.flashmessage.show(data.msg, {
-          cssClass : 'alert-danger',
-          timeout:1500});
+        this.snackBar.open(data.msg, 'Error', {
+          duration: 3000,
+        });
         this.router.navigate(['changepass']);
       }
     } )

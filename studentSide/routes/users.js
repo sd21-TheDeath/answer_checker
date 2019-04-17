@@ -29,8 +29,8 @@ router.post('/register', (req, res, next) => {
 
           var spawn = require("child_process").spawn;
           var process = spawn('python', ["./sendMail.py",
-            // newUser.username,
-            "201601441",
+            newUser.username,
+            // "  201601441",
             req.body.password,
           ]);
           // console.log(process);
@@ -194,8 +194,8 @@ router.post('/sendotp', (req, res, next) => {
   // console.log(req);
   var spawn = require("child_process").spawn;
   var process = spawn('python', ["./sendOTP.py",
-    // newUser.username,
-    "201601441",
+    req.body.username,
+    // "201601441",
     req.body.otp,
   ]);
   // process.stdout.on('data', function (data) {
@@ -234,4 +234,44 @@ User.findOne({username: req.body.username}, function(err, document) {
   }
   });
 });
+
+router.post('/trainmodel',(req,res,next)=>{
+  console.log(req.body.tags);
+  var spawn = require("child_process").spawn;
+  var process = spawn('python', ["./corpusAndTrainCombined.py",
+    req.body.tags,
+    req.body.batch,
+    req.body.course,
+    req.body.program,
+    req.body.examNo
+  ]);
+  process.stdout.on('data', function (data) {
+  console.log("***********")
+  console.log(data)
+  res.json({success:true, msg : 'Model created successfully\n'});
+  });
+});
+
+router.post('/checkanswers',(req,res,next)=> {
+  var spawn = require("child_process").spawn;
+  var process = spawn('python', ["./checkAndMakePdfAndSend.py",
+    req.body.examNo ,
+    req.body.username ,
+    req.body.batch ,
+    req.body.course ,
+    req.body.studentAnswers ,
+    req.body.professorAnswers ,
+    req.body.examDate ,
+    req.body.program
+  ]);
+  process.stdout.on('data', function (data) {
+    console.log("in here")
+    var str = data.toString();
+    console.log(str);
+    res.json({success:true, msg : 'OTP sent successfully\n'})
+  });
+  
+});
+
+
 module.exports = router;

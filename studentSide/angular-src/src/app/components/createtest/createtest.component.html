@@ -25,7 +25,7 @@
                     <ng-template matStepLabel type="button">Exam Info</ng-template>
                     <div>
                       <mat-form-field>
-                        <input matInput formControlName="batch" [(ngModel)]="batch" name="batch" placeholder="Batch">
+                        <input matInput formControlName="batch" [(ngModel)]="batch" name="batch" placeholder="Batch" required>
                         <mat-error *ngIf="!myForm.controls.batch.valid">
                           Exactly <strong>4</strong> digits
                         </mat-error>
@@ -34,7 +34,7 @@
                     <br />
                     <div>
                       <mat-form-field>
-                        <input matInput formControlName="program" [(ngModel)]="program" name="program" placeholder="Program">
+                        <input matInput formControlName="program" [(ngModel)]="program" name="program" placeholder="Program" required>
                         <mat-error *ngIf="!myForm.controls.program.valid">
                           Exactly <strong>2</strong> digits
                         </mat-error>
@@ -43,7 +43,7 @@
                     <br />
                     <div>
                       <mat-form-field>
-                        <input matInput formControlName="code" [(ngModel)]="code" name="code" placeholder="Course Code">
+                        <input matInput formControlName="code" [(ngModel)]="code" name="code" placeholder="Course Code" required>
                         <mat-error *ngIf="!myForm.controls.code.valid">
                           Exactly <strong>5</strong> characters Example:IT314
                         </mat-error>
@@ -63,18 +63,18 @@
                     <div>
                         <label style="font-size: large; color: #673ab7">Exam - Start Time</label>
                         <br />
-                        <mat-form-field class="manage-display" style="width: 5% !important">
-                            <input matInput formControlName="starthh" [(ngModel)]="starthh" name="starthh" placeholder="HH">
+                        <mat-form-field class="manage-display" style="width: 8% !important">
+                            <input matInput formControlName="starthh" [(ngModel)]="starthh" name="starthh" placeholder="HH" required>
                             <mat-error *ngIf="!myForm.controls.starthh.valid"></mat-error>
                         </mat-form-field>
                         :
-                        <mat-form-field class="manage-display" style="width: 5% !important">
-                            <input matInput formControlName="startmm" [(ngModel)]="startmm" name="startmm" placeholder="MM">
+                        <mat-form-field class="manage-display" style="width: 8% !important">
+                            <input matInput formControlName="startmm" [(ngModel)]="startmm" name="startmm" placeholder="MM" required>
                             <mat-error *ngIf="!myForm.controls.startmm.valid"></mat-error>
                         </mat-form-field>
                         :
-                        <mat-form-field class="manage-display" style="width: 5% !important">
-                            <input matInput formControlName="startss" [(ngModel)]="startss" name="startss" placeholder="SS">
+                        <mat-form-field class="manage-display" style="width: 8% !important">
+                            <input matInput formControlName="startss" [(ngModel)]="startss" name="startss" placeholder="SS" required>
                             <mat-error *ngIf="!myForm.controls.startss.valid"></mat-error>
                         </mat-form-field>
                     </div>
@@ -82,18 +82,18 @@
                     <div>
                         <label style="font-size: large; color: #673ab7">Exam - Duration</label>
                         <br />
-                        <mat-form-field class="manage-display" style="width: 5% !important">
-                            <input matInput formControlName="durationhh" [(ngModel)]="durationhh" name="durationhh" placeholder="HH">
+                        <mat-form-field class="manage-display" style="width: 8% !important">
+                            <input matInput formControlName="durationhh" [(ngModel)]="durationhh" name="durationhh" placeholder="HH" required>
                             <mat-error *ngIf="!myForm.controls.durationhh.valid"></mat-error>
                         </mat-form-field>
                         :
-                        <mat-form-field class="manage-display" style="width: 5% !important">
-                            <input matInput formControlName="durationmm" [(ngModel)]="durationmm" name="durationmm" placeholder="MM">
+                        <mat-form-field class="manage-display" style="width: 8% !important">
+                            <input matInput formControlName="durationmm" [(ngModel)]="durationmm" name="durationmm" placeholder="MM" required>
                             <mat-error *ngIf="!myForm.controls.durationmm.valid"></mat-error>
                         </mat-form-field>
                         :
-                        <mat-form-field class="manage-display" style="width: 5% !important">
-                            <input matInput formControlName="durationss" [(ngModel)]="durationss" name="durationss" placeholder="SS">
+                        <mat-form-field class="manage-display" style="width: 8% !important">
+                            <input matInput formControlName="durationss" [(ngModel)]="durationss" name="durationss" placeholder="SS" required>
                             <mat-error *ngIf="!myForm.controls.durationss.valid"></mat-error>
                         </mat-form-field>
                     </div>
@@ -123,7 +123,7 @@
                                   #autosize="cdkTextareaAutosize"
                                   cdkAutosizeMinRows="5"
                                   cdkAutosizeMaxRows="10"
-                                  placeholder="Description"></textarea>
+                                  placeholder="Description" required></textarea>
                       </mat-form-field>
                     </div>
                     <div class="text-center">

@@ -39,7 +39,7 @@ router.post('/createtest',(req,res,next)=>{
                 res.json({success:false, msg: "Create Test Failed\n"});
             }
             else{
-                res.json({success:true, msg : "Test Created\n"});
+                res.json({success:true, msg : "Test Created\n", examNo : newTest.number});
             }
         });
     });
@@ -58,5 +58,8 @@ router.post('/gettest', (req, res, next) => {
     });
 
 });
+
+
+
 
 module.exports = router;

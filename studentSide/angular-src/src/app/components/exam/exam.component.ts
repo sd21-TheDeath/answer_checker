@@ -8,6 +8,7 @@ import { Validators, FormGroup, FormArray, FormBuilder } from '@angular/forms';
 //import { collectAndResolveStyles } from '@angular/core/src/animation/animation_style_util';
 import {FlashMessagesService} from 'angular2-flash-messages';
 import {Router} from '@angular/router';
+import {MatSnackBar} from '@angular/material';
 //import {Observable} from '@reactivex/rxjs/es6/Observable.js'
 // import {BrowserAnimationsModule} from '@angular/platform-browser';
 
@@ -50,6 +51,7 @@ export class ExamComponent implements OnInit {
     private testservice: TestService,
     private http: Http,
     private router: Router,
+    private snackBar: MatSnackBar,
     private _fb : FormBuilder){
 
     }
@@ -401,6 +403,34 @@ export class ExamComponent implements OnInit {
         sum += Number(this.questions[j].m);
       }
       console.log("2");
+      
+      console.log("3");
+      
+      let studAns = Array(this.myForm.value.ansSet.length);
+      let profAns = Array(this.myForm.value.ansSet.length);
+      
+      for(j=0; j<this.myForm.value.ansSet.length; j++){
+        studAns[j] = this.myForm.value.ansSet[j].ans + ':/5762*';
+        profAns[j] = this.dataOfAllExams.tests[i].qset[j].a + ':/5762*';
+      }
+
+
+      let json2 = {
+        examNo : this.dataOfAllExams.tests[i].number,
+        username : JSON.parse(localStorage.getItem('user')).username,
+        batch : this.dataOfAllExams.tests[i].batch,
+        course : this.dataOfAllExams.tests[i].code,
+        // professor : ,
+        studentAnswers : studAns,
+        professorAnswers : profAns,
+        examDate : this.dataOfAllExams.tests[i].startdate,
+        program : this.dataOfAllExams.tests[i].program
+      }
+      console.log(json2)
+      this.authservice.checkAnswers(json2).subscribe(data=>{
+        console.log(data);
+      });
+
       let json = {
         sid : rawJson.name,
         name : rawJson.name,
@@ -412,7 +442,7 @@ export class ExamComponent implements OnInit {
         marks : "15",
         total_marks : "100"
       }
-      console.log("3");
+
       this.authservice.storeStudentProfile(json).subscribe(data => {
         console.log("*************\n" + data);
         console.log("4");

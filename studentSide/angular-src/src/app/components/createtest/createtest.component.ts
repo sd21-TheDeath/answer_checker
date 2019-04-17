@@ -6,6 +6,7 @@ import {FlashMessagesService} from 'angular2-flash-messages';
 import {Router} from '@angular/router';
 import {MatChipInputEvent} from '@angular/material';
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
+import {MatSnackBar} from '@angular/material';
 
 export interface Tag {
   name: string
@@ -28,6 +29,7 @@ export class CreatetestComponent implements OnInit {
   constructor(private _fb: FormBuilder,
     private testservice:TestService,
     private flashmessage : FlashMessagesService,
+    private snackBar: MatSnackBar,
     private router : Router) { }
 
 
@@ -80,19 +82,48 @@ export class CreatetestComponent implements OnInit {
     }
     const test = this.myForm.value;
     console.log(test);
+    // let json = {
+    //   tags : JSON.stringify(this.tags),
+    //   course : test.code,
+    //   batch : test.batch,
+    //   examNo : test.number,
+    //   program : test.program
+    // }
+    // console.log(json);
+    // this.testservice.trainModel(json).subscribe(data => {
+    //   console.log(data);
+    // });
     this.testservice.createTest(test).subscribe(data => {
       if(data.success)
       {
-        this.flashmessage.show('Test created successfully', {
-          cssClass : 'alert-success',
-          timeout:3000});
-        this.router.navigate(['dashboard'])
+        let json = {
+          tags : JSON.stringify(this.tags),
+          course : test.code,
+          batch : test.batch,
+          examNo : data.examNo,
+          program : test.program
+        }
+        console.log(json);
+        this.testservice.trainModel(json).subscribe(data => {
+          console.log(data);
+          this.snackBar.open('Test created successfully', 'Success', {
+            duration: 3000,
+          });
+          // this.flashmessage.show('Test created successfully', {
+          //   cssClass : 'alert-success',
+          //   timeout:3000});
+          this.router.navigate(['dashboard'])
+        });
+        // this.flashmessage.show('Test created successfully', {
+        //   cssClass : 'alert-success',
+        //   timeout:3000});
+        // this.router.navigate(['dashboard'])
       }
       else
       {
-        this.flashmessage.show('Provide all required values', {
-          cssClass : 'alert-danger',
-          timeout:3000});
+        this.snackBar.open('Provide all required values', 'Error', {
+          duration: 3000,
+        });
       }
     });
   }

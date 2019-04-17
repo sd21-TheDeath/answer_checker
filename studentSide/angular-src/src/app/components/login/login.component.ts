@@ -3,6 +3,8 @@ import {AuthService} from '../../services/auth.service';
 import {Router} from '@angular/router';
 import { Validators, FormGroup, FormArray, FormBuilder } from '@angular/forms';
 import {FlashMessagesService} from 'angular2-flash-messages';
+import {MatSnackBar} from '@angular/material';
+
 // import {NavbarComponent} from '../navbar/navbar.component';
 // console.log('1');
 // console.log(NavbarComponent);
@@ -21,6 +23,7 @@ export class LoginComponent implements OnInit {
     private _fb: FormBuilder,
     private authservice:AuthService,
     private router : Router,
+    private snackBar: MatSnackBar,
     // private navbar : NavbarComponent,
     private flashmessage : FlashMessagesService) { }
 
@@ -32,13 +35,23 @@ export class LoginComponent implements OnInit {
     this.authservice.castStudent.subscribe(userLoggedIn => this.dummyUserLoggedIn = userLoggedIn)
   }
 
+  // openSnackBar(message: string, action: string) {
+  //   this.snackBar.open(message, action, {
+  //     duration: 3000,
+  //   });
+  // }
+
   onLoginSubmit(){
     const user = this.myForm.value;
     //console.log(user.username==undefined);
-    if(user.username==undefined || user.password==undefined) {
-      this.flashmessage.show('Username and Password are required', {
-        cssClass : 'alert-danger',
-        timeout:1500});
+    if(user.username==undefined || user.password==undefined || user.username.length==0 || user.password.length==0) {
+      this.snackBar.open('Username and Password are required', 'Error', {
+        duration: 3000,
+      });
+      //this.openSnackBar('Username and Password are required','error');
+      // this.flashmessage.show('Username and Password are required', {
+      //   cssClass : 'alert-danger',
+      //   timeout:1500});
     }
     else {
       this.authservice.authenticateUser(user).subscribe(data => {
@@ -51,27 +64,30 @@ export class LoginComponent implements OnInit {
           //   timeout:1500});
           if(data.user.profession == "student"){
             this.authservice.studentIsNowLoggedIn();
-            this.flashmessage.show('student logged in', {
-              cssClass : 'alert-success',
-              timeout:1500});
+            this.snackBar.open('Student logged in', 'Success', {
+              duration: 2000,
+            });
+            // this.flashmessage.show('student logged in', {
+            //   cssClass : 'alert-success',
+            //   timeout:1500});
           }
           else if(data.user.profession == "professor"){
             this.authservice.professorIsNowLoggedIn();
-            this.flashmessage.show('professor logged in', {
-              cssClass : 'alert-success',
-              timeout:1500});
+            this.snackBar.open('Professor logged in', 'Success', {
+              duration: 2000,
+            });
           }
           else if(data.user.profession == "admin"){
             this.authservice.adminIsNowLoggedIn();
-            this.flashmessage.show('admin logged in', {
-              cssClass : 'alert-success',
-              timeout:1500});
+            this.snackBar.open('Admin logged in', 'Success', {
+              duration: 2000,
+            });
           }
-          this.router.navigate(['dashboard']);
+          this.router.navigate(['']);
         }else{
-          this.flashmessage.show(data.msg, {
-            cssClass : 'alert-danger',
-            timeout:1500});
+          this.snackBar.open(data.msg, 'Error', {
+            duration: 3000,
+          });
           this.router.navigate(['login']);
         }
       } )
@@ -83,12 +99,15 @@ export class LoginComponent implements OnInit {
   }
 
   changePassword(){
-    console.log("password change requested")
+    //console.log("password change requested")
     if(this.myForm.value.username == undefined){
-      console.log("Enter username")
-      this.flashmessage.show('Please enter username', {
-        cssClass : 'alert-danger',
-        timeout:1500});
+      //console.log("Enter username")
+      this.snackBar.open('Please enter username', 'Error', {
+        duration: 3000,
+      });
+      // this.flashmessage.show('Please enter username', {
+      //   cssClass : 'alert-danger',
+      //   timeout:1500});
     }
     else{
       const json = {

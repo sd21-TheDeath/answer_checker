@@ -18,4 +18,13 @@ export class TestService {
     return this.http.post('http://localhost:3000/tests/gettest',json, {headers:headers})
     .map(res => res.json());
   }
+
+  trainModel(json){
+    console.log(json)
+    let headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    return this.http.post('http://localhost:3000/users/trainmodel',json, {headers:headers})
+    .map(res => res.json());
+  }
+
 }

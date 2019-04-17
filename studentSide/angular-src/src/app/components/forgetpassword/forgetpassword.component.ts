@@ -3,7 +3,7 @@ import {AuthService} from '../../services/auth.service';
 import { Validators, FormGroup, FormArray, FormBuilder } from '@angular/forms';
 import {Router} from '@angular/router';
 import {FlashMessagesService} from 'angular2-flash-messages';
-
+import {MatSnackBar} from '@angular/material';
 
 @Component({
   selector: 'app-forgetpassword',
@@ -22,6 +22,7 @@ export class ForgetpasswordComponent implements OnInit {
     private _fb: FormBuilder,
     private authserive : AuthService,
     private router : Router,
+    private snackBar: MatSnackBar,
     private flashmessage : FlashMessagesService
   ) { }
 
@@ -57,9 +58,8 @@ export class ForgetpasswordComponent implements OnInit {
       otp : this.otpGen};
     this.authserive.generateOTP(json).subscribe(data => {
       if(data.success){
-        this.flashmessage.show('OTP sent', {
-          cssClass : 'alert-success',
-          timeout:1500
+        this.snackBar.open('OTP sent', 'Success', {
+          duration: 3000,
         });
         this.otpGenerated = true;
       }
@@ -73,9 +73,8 @@ export class ForgetpasswordComponent implements OnInit {
       this.otpMatched = true;
     }
     else{
-      this.flashmessage.show('incorrect OTP', {
-        cssClass : 'alert-danger',
-        timeout:1500
+      this.snackBar.open('Incorrect OTP', 'Error', {
+        duration: 3000,
       });
     }
     
@@ -88,25 +87,24 @@ export class ForgetpasswordComponent implements OnInit {
       newPassword : this.myForm.value.newPassword
     }
     if(json.username==undefined || json.newPassword==undefined) {
-      this.flashmessage.show('Username and New Password are required', {
-        cssClass : 'alert-danger',
-        timeout:1500});
+      this.snackBar.open('Username and New Password are required', 'Error', {
+        duration: 3000,
+      });
     }
     else {
       this.authserive.changePasswordThroughOTP(json).subscribe(data => {
         if(data.success){
-          this.flashmessage.show('Password changed successfully', {
-            cssClass : 'alert-success',
-            timeout:1500
+          this.snackBar.open('Password changed successfully', 'Success', {
+            duration: 3000,
           });
+          this.router.navigate(['/login']);
         }
         else{
-          this.flashmessage.show(data.msg, {
-            cssClass : 'alert-danger',
-            timeout:1500
+          this.snackBar.open(data.msg, 'Error', {
+            duration: 3000,
           });
+          this.router.navigate(['/forgetpass']);
         }
-        this.router.navigate(['/login']);
       });
     }
   }

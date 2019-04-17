@@ -3,6 +3,7 @@ import {AuthService} from '../../services/auth.service';
 import {Router} from '@angular/router';
 import {FlashMessagesService} from 'angular2-flash-messages';
 import 'rxjs/add/operator/map';
+import {MatSnackBar} from '@angular/material';
 
 @Component({
   selector: 'app-navbar',
@@ -19,6 +20,7 @@ export class NavbarComponent implements OnInit {
   constructor(
     private authservice:AuthService,
     private router : Router,
+    private snackBar: MatSnackBar,
     private flashmessage : FlashMessagesService) {
 
     }
@@ -36,10 +38,9 @@ export class NavbarComponent implements OnInit {
     if(this.dummyStudentLoggedIn || this.dummyProfessorLoggedIn || this.dummyAdminLoggedIn){
     this.authservice.userIsNowLoggedOut();
     this.authservice.logout();
-    this.flashmessage.show('You are now logged out', {
-      cssClass : 'alert-success',
-      timeout:1500
-    })
+    this.snackBar.open('You are now logged out', 'Success', {
+      duration: 3000,
+    });
     this.router.navigate(['/login']);
     return false;
   }

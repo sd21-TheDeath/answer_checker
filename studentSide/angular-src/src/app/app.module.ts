@@ -13,6 +13,7 @@ import {MatStepperModule} from '@angular/material';
 import {MatTabsModule} from '@angular/material/tabs';
 import {MatCardModule} from '@angular/material/card';
 import {MatChipsModule} from '@angular/material/chips';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
 
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
@@ -74,6 +75,7 @@ const appRoutes: Routes =  [
     MatStepperModule,
     MatCardModule,
     MatChipsModule,
+    MatSnackBarModule,
     ReactiveFormsModule,
     FormsModule,
     HttpModule,
@@ -93,6 +95,7 @@ const appRoutes: Routes =  [
     MatTabsModule,
     MatCardModule,
     MatChipsModule,
+    MatSnackBarModule,
     MatStepperModule
   ],
   bootstrap: [AppComponent]
