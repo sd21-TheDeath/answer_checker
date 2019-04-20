@@ -10,7 +10,7 @@
 <p class="lead">
   Welcome to the DA-IICT test portal, the unofficial test platform for DA-IICT.
 </p>
-<div>
+<div *ngIf="!(dummyStudentLoggedIn==true || dummyProfessorLoggedIn==true || dummyAdminLoggedIn==true)">
   <a class="btn btn-primary" [routerLink] = "['/login']">Login</a>
 </div>
 </div>

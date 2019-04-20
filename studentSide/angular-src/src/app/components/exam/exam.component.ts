@@ -294,7 +294,7 @@ export class ExamComponent implements OnInit {
     // console.log(Math.floor(10/8));
   }
 
-  initAnswer(temp: string, i: number){
+  initAnswer(temp: string, temp_marks: string, i: number){
     //console.log(temp);
     var obj='';
     console.log(i);
@@ -306,13 +306,15 @@ export class ExamComponent implements OnInit {
     return this._fb.group({
       question: [temp],
       ans: [obj],
+      marks: [temp_marks]
     });
     //console.log("ac");
   }
 
-  addAnswer(temp: string, i: number){
+  addAnswer(temp: string, temp_marks: string, i: number){
     const control = <FormArray>this.myForm.controls['ansSet'];
-    control.push(this.initAnswer(temp,i));
+    console.log(temp_marks);
+    control.push(this.initAnswer(temp,temp_marks,i));
   }
 
   loadAnswers(){
@@ -350,10 +352,10 @@ export class ExamComponent implements OnInit {
     this.starting_min = Number(this.dataOfAllExams.tests[arg].startmm);
     this.starting_sec = Number(this.dataOfAllExams.tests[arg].startss);
     this.examSelected = true;
-    //console.log(this.questions);
+    console.log(this.questions);
     var i;
     for(i=0; i<this.questions.length; i++){
-      this.addAnswer(this.questions[i].q,i);
+      this.addAnswer(this.questions[i].q,this.questions[i].m,i);
     }
     this.myForm.valueChanges.subscribe(formData => {
       console.log(formData);
@@ -403,12 +405,12 @@ export class ExamComponent implements OnInit {
         sum += Number(this.questions[j].m);
       }
       console.log("2");
-      
+
       console.log("3");
-      
+
       let studAns = Array(this.myForm.value.ansSet.length);
       let profAns = Array(this.myForm.value.ansSet.length);
-      
+
       for(j=0; j<this.myForm.value.ansSet.length; j++){
         studAns[j] = this.myForm.value.ansSet[j].ans + ':/5762*';
         profAns[j] = this.dataOfAllExams.tests[i].qset[j].a + ':/5762*';

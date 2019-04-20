@@ -22,6 +22,7 @@ export class CreatetestComponent implements OnInit {
   panelOpenState = false;
   visible = true;
   selectable = true;
+  showSpinner = false;
   removable = true;
   addOnBlur = true;
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
@@ -93,6 +94,7 @@ export class CreatetestComponent implements OnInit {
     // this.testservice.trainModel(json).subscribe(data => {
     //   console.log(data);
     // });
+    this.showSpinner = true;
     this.testservice.createTest(test).subscribe(data => {
       if(data.success)
       {
@@ -106,14 +108,19 @@ export class CreatetestComponent implements OnInit {
         console.log(json);
         this.testservice.trainModel(json).subscribe(data => {
           console.log(data);
+          this.showSpinner = false;
           this.snackBar.open('Test created successfully', 'Success', {
             duration: 3000,
           });
           // this.flashmessage.show('Test created successfully', {
           //   cssClass : 'alert-success',
           //   timeout:3000});
-          this.router.navigate(['dashboard'])
+          this.router.navigate([''])
         });
+        // this.snackBar.open('Test created successfully', 'Success', {
+        //       duration: 3000,
+        //     });
+        //     this.router.navigate([''])
         // this.flashmessage.show('Test created successfully', {
         //   cssClass : 'alert-success',
         //   timeout:3000});

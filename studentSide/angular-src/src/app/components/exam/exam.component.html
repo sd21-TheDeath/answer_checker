@@ -1,3 +1,5 @@
+<!-- <app-spinner *ngIf="true"></app-spinner> -->
+<div>
 <div *ngIf="!examSelected">
   <div *ngFor="let course of examCourses, let i=index">
     <br />
@@ -43,22 +45,6 @@
   </div>
 </div>
 
-
-<!-- <div *ngIf="!examSelected">
-  <div *ngFor="let course of examCourses, let i = index">
-    <button (click)="courseSelection(i)" id="courseSelection">{{course}}</button>
-  </div>
-</div>
-<div *ngIf="examSelected">
-<p *ngIf="times_up==false">
-  {{due_hour}} {{due_min}} {{due_sec}}
-</p> -->
-
-
-<!-- <button *ngIf="times_up==true && exam_taken==false" (click)="onButtonClick()" id="takeExamButton">Take Exam</button> -->
-
-
-
 <div *ngIf="exam_taken==true">
 <div style="color: #673ab7; font-size: x-large; text-align: right;">
   <span style="color: #8a7659; font-size: large">Ends in: </span>{{examCourses[exam_num].remhh}} : {{examCourses[exam_num].remmm}} : {{examCourses[exam_num].remss}}
@@ -78,6 +64,7 @@
         <br />
         <span style="color: #673ab7; font-size: x-large">{{myForm.value.ansSet[i].question}}</span>
         <br />
+        <span style="color: #673ab7; font-size: x-large">{{myForm.value.ansSet[i].marks}}</span>
         <br />
         <!-- <textarea class="form-control rounded-0" attr.id="ans" rows="10"></textarea> -->
         <mat-form-field style="width: 100% !important">
@@ -100,4 +87,4 @@
 </form>
 
 </div>
-<!-- </div> -->
+</div>

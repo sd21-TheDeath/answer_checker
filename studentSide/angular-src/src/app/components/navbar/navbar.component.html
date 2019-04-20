@@ -29,7 +29,8 @@
           <a class="nav-link" href="#" (click)="onExamClick()" >Exam <span class="sr-only">(current)</span></a>
       </li>
       <li class="nav-item"  *ngIf="dummyProfessorLoggedIn">
-        <a class="nav-link" [routerLink] = "['/login']">prof authority</a>
+        <!-- <a class="nav-link" [routerLink] = "['/login']">prof authority</a> -->
+        <a class="nav-link" [routerLink] = "['/createtest']">Create Test</a>
       </li>
       <li class="nav-item"  *ngIf="dummyAdminLoggedIn">
         <a class="nav-link" [routerLink] = "['/register']">Register Batch</a>

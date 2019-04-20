@@ -77,6 +77,21 @@ res = [float(i) for i in res]
 #XXXXXXXXXX    SOME MODULATION TO BE DONE HERE          XXXXXXXXXXX
 #xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
+# <70 -> 0
+# 70-80 -> 15
+# 80-90 -> 15-80
+# 90 -100 -> 80-100
+for i in range(0, len(res)):
+	if res[i] < 70:
+		res[i] = 0
+	elif res[i] <80 and res[i] >= 70:
+		res[i] = (res[i] - 70)*15/10
+	elif res[i] >=80 and res[i]<90:
+		res[i] = 15 + (res[i] - 80)*65/10
+	else:
+		res[i] = 80 + (res[i]-90)*20/10
+
+
 data = []
 for i in range(0,len(res)):
     temp = []

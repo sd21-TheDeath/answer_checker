@@ -25,9 +25,9 @@ x = [i.replace('name":"', "") for i in x]
 
 
 keypoints = x
-with io.open("sep.txt", "w", encoding="utf-8") as f:
-    f.write(keypoints[0])
-    f.write(keypoints[1])
+# with io.open("sep.txt", "w", encoding="utf-8") as f:
+    # f.write(keypoints[0])
+    # f.write(keypoints[1])
 #bcpe
 course = str(sys.argv[3])
 batch = str(sys.argv[2])

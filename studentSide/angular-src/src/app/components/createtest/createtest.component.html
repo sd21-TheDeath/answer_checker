@@ -1,18 +1,6 @@
-<!--<p>
-  createtest works!
-</p>-->
-
-<!--<div class="jumbotron text-center">
-  <h2 class="page-header">Create Test</h2>
-</div>
-  <div class="shadow-lg p-3 mb-5 bg-white rounded w-50 p-3 mx-auto">
-  <form (submit) = "onCreateTestSubmit()">-->
-    <!--
-    <div class="form-group">
-      <label>Program</label>
-      <input type="text" class="form-control" [(ngModel)]="program" name="program">
-    </div>-->
-      <div class="jumbotron text-center">
+<app-spinner *ngIf="showSpinner==true"></app-spinner>
+<div *ngIf="showSpinner==false">
+<div class="jumbotron text-center">
           <h2 class="page-header">Create Test</h2>
       </div>
       <!--class="shadow-lg p-3 mb-5 bg-white rounded w-100 p-3 mx-auto"-->
@@ -238,11 +226,4 @@
             </mat-horizontal-stepper>
         </form>
       </div>
-
-    <!--<input type="submit" class="btn btn-primary center" value="Submit">-->
-  <!--</form>-->
-    <!--<div class="text-center">
-      <button (click)="forgetPassword()" id="forgetPassword">Forgot Password</button>
-      <button (click)="changePassword()" id="changePassword">Change Password</button>
-    </div>-->
-  <!--</div>-->
+</div>

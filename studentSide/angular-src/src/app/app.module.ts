@@ -23,27 +23,33 @@ import { HomeComponent } from './components/home/home.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { ExamComponent } from './components/exam/exam.component';
+import { NotfoundComponent} from './components/notfound/notfound.component'
 
 import {ValidateService} from './services/validate.service';
 import {AuthService} from './services/auth.service';
 import { TestService } from './services/test.service';
 import {FlashMessagesModule} from 'angular2-flash-messages';
 import { AuthGuard} from './guards/auth.guard';
+import { StudentGuard} from './guards/student.guard';
+import { AdminGuard} from './guards/admin.guard';
+import { ProfessorGuard} from './guards/professor.guard';
 import { RegisterProfessorComponent } from './components/register-professor/register-professor.component';
 import { ChangepasswordComponent } from './components/changepassword/changepassword.component';
 import { ForgetpasswordComponent } from './components/forgetpassword/forgetpassword.component';
 import { CreatetestComponent } from './components/createtest/createtest.component';
+import { SpinnerComponent } from './components/spinner/spinner.component';
 const appRoutes: Routes =  [
   {path:'', component: HomeComponent},
-  {path:'register', component: RegisterComponent},
+  {path:'register', component: RegisterComponent, canActivate:[AdminGuard]},
   {path:'login', component: LoginComponent},
   {path:'dashboard', component: DashboardComponent, canActivate:[AuthGuard]},
   {path:'profile', component: ProfileComponent, canActivate:[AuthGuard]}, //registerprofessor
-  {path:'registerprofessor', component: RegisterProfessorComponent},
-  {path:'changepass', component: ChangepasswordComponent},
+  {path:'registerprofessor', component: RegisterProfessorComponent, canActivate:[AdminGuard]},
+  {path:'changepass', component: ChangepasswordComponent, canActivate:[AuthGuard]},
   {path:'forgetpass', component: ForgetpasswordComponent},
-  {path:'exam', component: ExamComponent},
-  {path:'createtest', component: CreatetestComponent}
+  {path:'exam', component: ExamComponent, canActivate:[StudentGuard]},
+  {path:'createtest', component: CreatetestComponent, canActivate:[ProfessorGuard]},
+  {path:'**', component: NotfoundComponent}
 ]
 
 @NgModule({
@@ -59,7 +65,9 @@ const appRoutes: Routes =  [
     RegisterProfessorComponent,
     ChangepasswordComponent,
     CreatetestComponent,
-    ForgetpasswordComponent
+    ForgetpasswordComponent,
+    SpinnerComponent,
+    NotfoundComponent
   ],
   imports: [
     BrowserModule,
@@ -87,6 +95,9 @@ const appRoutes: Routes =  [
     ValidateService,
     AuthService,
     AuthGuard,
+    AdminGuard,
+    StudentGuard,
+    ProfessorGuard,
     TestService,
     MatDatepickerModule,
     MatInputModule,
